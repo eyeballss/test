@@ -32,6 +32,7 @@ import helper.StaticManager;
  * - authority, private is default
  * - size of editText
  * - readMe
+ * - only one work
  */
 
 
@@ -122,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
             } else { //로그인에 성공하면 MainActivity로 이동.
-                in = new Intent(LoginActivity.this, MainActivity.class);
+                in = new Intent(LoginActivity.this, Main_Activity.class);
                 saveProfileToStaticManager(message); //로그인 성공이므로 profile 데이터를 핸드폰에 저장함.
                 startActivity(in);
 
@@ -145,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
         //저장이 되어있다면, 즉 프로필을 제대로 생성했다면
         if (StaticManager.checkIfSMHasProfile) {
             Log.d("LoginActivity", "result OK!");
-            Intent in = new Intent(LoginActivity.this, MainActivity.class);
+            Intent in = new Intent(LoginActivity.this, Main_Activity.class);
             startActivity(in);
             finish(); //로그인 하고 나면 로그인창은 닫습니다.
         }
