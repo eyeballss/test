@@ -50,7 +50,7 @@ public class EditProfileActivityTest extends ActivityInstrumentationTestCase2<Ed
 
     public void testOnBackPressed(){
         editProfileActivity.onBackPressed();
-
+        assertTrue(editProfileActivity.checkBackPressed);
     }
 
 
