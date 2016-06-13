@@ -1,4 +1,4 @@
-package helper;
+package helper.LocationService;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import helper.StaticManager.StaticManager;
 
 
 /**

@@ -9,13 +9,13 @@ import java.util.ArrayList;
 /**
  * Created by kesl on 2016-06-13.
  */
-public class Main_ActivityTest extends ActivityInstrumentationTestCase2<Main_Activity> {
+public class Main_ActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    private Main_Activity main_Activity;
+    private MainActivity main_Activity;
 
     //    private Resources mockResources;
     public Main_ActivityTest() {
-        super(Main_Activity.class);
+        super(MainActivity.class);
     }
 
     public void setUp() throws Exception {

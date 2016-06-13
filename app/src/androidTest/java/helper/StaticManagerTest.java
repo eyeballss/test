@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.List;
 
+import helper.StaticManager.StaticManager;
+
 /**
  * Created by kesl on 2016-06-13.
  */

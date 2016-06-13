@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import helper.HttpConnection;
-import helper.StaticManager;
+import helper.HttpConnection.HttpConnection;
+import helper.StaticManager.StaticManager;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -31,36 +31,32 @@ public class EditProfileActivity extends AppCompatActivity {
 
         //로그인 실패로 온 경우
         if(intent.getStringExtra("path").equals("loginFail")){
+            Log.d("EditProfileActivity", "from login fail");
             StaticManager.checkIfSMHasProfile=false;
             whereicame=false;
         }
         //수정하기 위해 온 경우
         if(intent.getStringExtra("path").equals("editProfile")){
+            Log.d("EditProfileActivity", "from edit profile");
             whereicame=true;
             setViews();
         }
 
-    }
+    }//onCreate
 
     //뷰들을 StaticManager에서 따와서 세팅함.
     private void setViews() {
+        Log.d("EditProfileActivity", "call setViews()");
         nicknameEditTxt.setText(StaticManager.nickname);
         commentEditTxt.setText(StaticManager.comment);
         if(StaticManager.sex) radioManBtn.setChecked(true);
         else radioWomanBtn.setChecked(true);
         StaticManager.checkIfSMHasProfile=true;
-    }
-
-    public void callSetViews(){
-        setViews();
-    }
-    public EditText getNicknameEditTxt() {return nicknameEditTxt;}
-    public EditText getCommentEditTxt() {return commentEditTxt;}
-    public RadioButton getRadioManBtn(){return radioManBtn;}
-    public RadioButton getRadioWomanBtn() {return radioWomanBtn;}
+    }//setViews
 
     //닉네임과 sex 여부 체크하고 코멘트는 괜찮음.
     public void saveProfileBtnOnClick(View v){
+        Log.d("EditProfileActivity", "call saveProfileBtnOnClick()");
         if(nicknameEditTxt.getText().toString().matches("")){ //닉네임이 정해져 있지 않으면
             StaticManager.testToastMsg("fill your nickname");
             return;
@@ -89,18 +85,18 @@ public class EditProfileActivity extends AppCompatActivity {
             StaticManager.comment=commentEditTxt.getText().toString();
         }
 
+        Log.d("EditProfileActivity", "StaticManager.checkIfSMHasProfile : true!");
         StaticManager.checkIfSMHasProfile=true; //저장했으므로 true;
         StaticManager.testToastMsg("You make a profile!");
 
     }//saveProfileBtnOnClick
-
 
     //취소 버튼이 눌린다면
     public boolean checkBackPressed=false;
     public void onBackPressed(){
         super.onBackPressed();
 
-        Log.d("EditProfileActivity", "push Back Btn");
+        Log.d("EditProfileActivity", "call onBackPressed()");
 
         if(StaticManager.checkIfSMHasProfile) {
 
@@ -108,23 +104,25 @@ public class EditProfileActivity extends AppCompatActivity {
             if (whereicame) {
                 editProfileInServer(); //디비에 수정.
                 setResult(RESULT_OK, intent);
-                Log.d("EditProfileActivity", "edit profile result OK");
+
+                Log.d("EditProfileActivity", StaticManager.checkIfSMHasProfile+" and editProfileInServer()");
             }
             //makeProfile ==true && whereicame edit을 하기 위해 옴 : 어찌저찌 채우고 Back 눌러 나가면
             else{
                 saveProfileIntoServer();//디비를 저장하고
                 setResult(RESULT_OK, intent); //OK라고 말해줌.
-                Log.d("EditProfileActivity", "login fail result OK");
+
+                Log.d("EditProfileActivity", StaticManager.checkIfSMHasProfile + " and saveProfileIntoServer()");
             }
         }
         //makeProfiel==false : 만들던 중간에 Back 눌러서 나가면
         else{
             checkBackPressed=true;
             setResult(RESULT_CANCELED, intent); //취소가 되었다고 말해줌.
-            Log.d("EditProfileActivity", "result CANCLE");
+            Log.d("EditProfileActivity", StaticManager.checkIfSMHasProfile + "result CANCLE");
         }
 
-    }
+    }//onBackPressed
 
 
 
@@ -151,7 +149,7 @@ public class EditProfileActivity extends AppCompatActivity {
         httpConnection.connect("http://"+StaticManager.ipAddress+"/eyeballs/db_save.php", "db_save.php", key, val);
 
         Log.d("EditProfileActivity", "send http msg to db_save.php");
-    }
+    }//saveProfileIntoServer()
 
     //데이터베이스에 저장. 내 프로필 바꾸는 거. idpw 값을 기준으로 저장할꺼임.
     private void editProfileInServer(){
@@ -171,10 +169,21 @@ public class EditProfileActivity extends AppCompatActivity {
         };
 
         //db_editProfile.php에 업데이트 해달라고 요청함.
-        Log.d("EditProfileActivity", val[0] + " " + val[1] + " " + val[2]+" "+val[3]+" are sent");
+        Log.d("EditProfileActivity", val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " are sent");
         HttpConnection httpConnection = new HttpConnection();
-        httpConnection.connect("http://"+StaticManager.ipAddress+"/eyeballs/db_editProfile.php", "db_editProfile.php", key, val);
+        httpConnection.connect("http://" + StaticManager.ipAddress + "/eyeballs/db_editProfile.php",
+                "db_editProfile.php", key, val);
+    }//editProfileInServer()
 
-        Log.d("EditProfileActivity", "send http msg to db_editProfile.php");
+
+    //for test
+
+    public void callSetViews(){
+        setViews();
     }
+    public EditText getNicknameEditTxt() {return nicknameEditTxt;}
+    public EditText getCommentEditTxt() {return commentEditTxt;}
+    public RadioButton getRadioManBtn(){return radioManBtn;}
+    public RadioButton getRadioWomanBtn() {return radioWomanBtn;}
+
 }

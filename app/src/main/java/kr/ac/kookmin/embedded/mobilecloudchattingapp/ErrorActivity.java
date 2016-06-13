@@ -3,7 +3,7 @@ package kr.ac.kookmin.embedded.mobilecloudchattingapp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import helper.Message;
+import helper.Message.Message;
 
 public class ErrorActivity extends AppCompatActivity {
 

@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-import helper.HttpConnection;
-import helper.StaticManager;
+import helper.HttpConnection.HttpConnection;
+import helper.StaticManager.StaticManager;
 
 public class ChattingActivity extends AppCompatActivity {
 
@@ -71,9 +71,10 @@ public class ChattingActivity extends AppCompatActivity {
         startNetwork.start();
 
         initializeChatRequest();
-    }
+    }//onCreate
 
     private void initializeChatRequest() {
+        Log.d("ChattingActivity", "call initializeChatRequest()");
 
         String[] key = {
                 "sender",
@@ -92,6 +93,7 @@ public class ChattingActivity extends AppCompatActivity {
     public BroadcastReceiver mLocalBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d("ChattingActivity", "mLocalBroadcastReceiver");
             // db_login.php로 보낸 결과값을 여기서 받음.
             final String message = intent.getStringExtra("db_getChat.php");
 
@@ -102,25 +104,26 @@ public class ChattingActivity extends AppCompatActivity {
                 }
             }
 
-            Log.d("ChattingActivity", "local broadcast receiver works");
+            Log.d("ChattingActivity", "local broadcast receiver is done");
         }
-    };
+    };//mLocalBroadcastReceiver
 
     private void parser(String msg) {
+        Log.d("ChattingActivity", "call parser()");
         StringTokenizer token = new StringTokenizer(msg, "*");
         while (token.hasMoreTokens()) {
             loadOnChatList(token.nextToken());
         }
-    }
+    }//parser
 
-    //에소프레소
     public void loadOnChatList(final String msg) {
         handler.post(new Runnable() { //VIEW 들을 만져줌.
             public void run() {
                 mChattingAdapter.add(msg); //채팅창에 올림
             }
         });
-    }
+        Log.d("ChattingActivity", "call loadOnChatList(). msg : "+msg);
+    }//loadOnChatList
 
     //아래는 채팅 쓰레드
     public class StartNetwork extends Thread {

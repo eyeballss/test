@@ -15,8 +15,8 @@ import android.widget.EditText;
 
 import java.util.StringTokenizer;
 
-import helper.HttpConnection;
-import helper.StaticManager;
+import helper.HttpConnection.HttpConnection;
+import helper.StaticManager.StaticManager;
 
 /**
  * Don't forget:
@@ -33,19 +33,18 @@ import helper.StaticManager;
  * - size of editText
  * - readMe
  * - only one work
+ * - arrange
  */
 
 
 /**
  * Main screen that client sees first
  * A login screen that offers login.
- *
  */
 public class LoginActivity extends AppCompatActivity {
 
 
     private EditText idEditTxt, pwEditTxt;
-//    private Button loginBtn;
     private static int idpwHashCode;
     static private HttpConnection httpConnection;
 
@@ -59,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
 
         idEditTxt = (EditText) findViewById(R.id.idEditTxt);
         pwEditTxt = (EditText) findViewById(R.id.pwEditTxt);
-//        loginBtn = (Button) findViewById(R.id.loginBtn);
         httpConnection = new HttpConnection(); //http 컨넥터 만들기
 
     }//onCreate
@@ -67,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //로그인 버튼 클릭하면
     public void loginBtnOnClick(View v) {
+        Log.d("LoginActivity", "Call loginBtnOnClick()");
 
         String idTxt = idEditTxt.getText().toString();
         String pwTxt = pwEditTxt.getText().toString();
@@ -97,33 +96,35 @@ public class LoginActivity extends AppCompatActivity {
 
     }//loginBtnOnClick
 
-    private void makeHashCode(String idTxt, String pwTxt){
+    //해쉬코드를 만듦
+    private void makeHashCode(String idTxt, String pwTxt) {
+        Log.d("LoginActivity", "call makeHashCode()");
         //아이디+비밀번호 문자열을 해쉬코드로 넘김.
         idpwHashCode = (idTxt.trim() + "" + pwTxt.trim()).hashCode();
         //SM에 저장함.
         StaticManager.idpw = idpwHashCode;
-    }
+        Log.d("LoginActivity", "StaticManager.idps : " + idpwHashCode);
+    }//makeHashCode
 
-    //for test
-    public void callMakeHashCode(String idTxt, String pwTxt){
-        makeHashCode(idTxt, pwTxt);
-    }
 
     //서버에서 가져온 값을 알려주는 브로드캐스트 리시버
     private BroadcastReceiver mLocalBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // db_login.php로 보낸 결과값을 여기서 받음.
+            Log.d("LoginActivity", "mLocalBroadcastReceiver");
             final String message = intent.getStringExtra("db_login.php");
             Intent in;
             if (message.equals("false")) { //로그인에 실패하면 바로 가입을 위해 EidtProfileActivity로 이동
+                Log.d("LoginActivity", "message.equals(\"false\")");
                 in = new Intent(LoginActivity.this, EditProfileActivity.class);
                 in.putExtra("path", "loginFail");
                 startActivityForResult(in, 1);
 
 
             } else { //로그인에 성공하면 MainActivity로 이동.
-                in = new Intent(LoginActivity.this, Main_Activity.class);
+                Log.d("LoginActivity", "login success");
+                in = new Intent(LoginActivity.this, MainActivity.class);
                 saveProfileToStaticManager(message); //로그인 성공이므로 profile 데이터를 핸드폰에 저장함.
                 startActivity(in);
 
@@ -133,20 +134,19 @@ public class LoginActivity extends AppCompatActivity {
 
             Log.d("LoginActivity", "local broadcast receiver works");
         }
-    };
+    };//mLocalBroadcastReceiver
 
 
     //profile 만든 후에 제대로 저장하면 OK 아니면 FALSE
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("LoginActivity", "call onActivityResult()");
 
-
-        Log.d("LoginActivity", "onActivityResult call");
         //저장이 되어있다면, 즉 프로필을 제대로 생성했다면
         if (StaticManager.checkIfSMHasProfile) {
             Log.d("LoginActivity", "result OK!");
-            Intent in = new Intent(LoginActivity.this, Main_Activity.class);
+            Intent in = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(in);
             finish(); //로그인 하고 나면 로그인창은 닫습니다.
         }
@@ -156,32 +156,31 @@ public class LoginActivity extends AppCompatActivity {
             //do nothing.
             Log.d("LoginActivity", "result CANCELED");
         }
-
-        Log.d("LoginActivity", "onActivityResult end");
-
-
-    }
+    }//onActivityResult
 
     //msg를 파싱해서 원하는 것만
     private void saveProfileToStaticManager(String msg) {
+        Log.d("LoginActivity", "call saveProfileToStaticManager()");
         StringTokenizer token = new StringTokenizer(msg, " ");
 
         //StaticManager에 저장하여 다른 곳에서도 이용할 수 있도록 함.
         StaticManager.nickname = token.nextToken();
         if (token.nextToken().equals("f")) StaticManager.sex = false;
         else StaticManager.sex = true;
-        StaticManager.comment="";
-        while(token.hasMoreTokens()) //space 기준으로 토큰을 만드니까, 코멘트에 space가 있을 때는 모두 붙여줌.
-            StaticManager.comment += token.nextToken()+" ";
+        StaticManager.comment = "";
+        while (token.hasMoreTokens()) //space 기준으로 토큰을 만드니까, 코멘트에 space가 있을 때는 모두 붙여줌.
+            StaticManager.comment += token.nextToken() + " ";
         StaticManager.checkIfSMHasProfile = true; //저장했으므로 true;
-    }
+    }//saveProfileToStaticManager
 
-    public void callSaveProfileToStaticManager(String msg){
+
+    //for test
+    public void callSaveProfileToStaticManager(String msg) {
         saveProfileToStaticManager(msg);
     }
-
-
-
+    public void callMakeHashCode(String idTxt, String pwTxt) {
+        makeHashCode(idTxt, pwTxt);
+    }
 
     protected void onResume() {
         super.onResume();

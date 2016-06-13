@@ -5,7 +5,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import org.junit.Before;
 import org.junit.Test;
 
-import helper.StaticManager;
+import helper.StaticManager.StaticManager;
 
 /**
  * Created by kesl on 2016-06-10.

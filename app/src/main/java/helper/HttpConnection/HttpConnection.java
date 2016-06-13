@@ -1,4 +1,4 @@
-package helper;
+package helper.HttpConnection;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -12,6 +12,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+
+import helper.StaticManager.StaticManager;
 
 /**
  * Created by kesl on 2016-04-28.

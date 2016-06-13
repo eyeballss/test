@@ -3,6 +3,8 @@ package helper;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import helper.StaticManager.StaticManager;
+
 /**
  * Created by kesl on 2016-05-04.
  */

@@ -1,16 +1,17 @@
-package helper;
+package helper.Message;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import helper.StaticManager.StaticManager;
+
 /**
  * Created by kesl on 2016-04-22.
  */
 public class Message {
 
-    //에소프레소
     public static void okayMsgShow(String msg) {
         AlertDialog.Builder alert = new AlertDialog.Builder(StaticManager.applicationContext);
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {

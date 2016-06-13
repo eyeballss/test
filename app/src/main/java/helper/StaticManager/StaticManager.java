@@ -1,4 +1,4 @@
-package helper;
+package helper.StaticManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -36,13 +36,6 @@ public class StaticManager {
 
     public static LocationManager locationManager;
 
-
-//    //로컬 브로드캐스트 생각해보니 intentName이 하나로 고정되어 있어도 괜찮을 듯. key 값으로 구별하면 되니까.
-//    public static void sendBroadcast(String intentName, String key, String data) {
-//        Intent intent = new Intent(intentName);
-//        intent.putExtra(key, data);
-//        LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent);
-//    }
     //로컬 브로드캐스트
     public static void sendBroadcast(String key, String data) {
         Intent intent = new Intent("localBroadCast");
