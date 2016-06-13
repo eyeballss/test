@@ -96,6 +96,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
     //취소 버튼이 눌린다면
+    public boolean checkBackPressed=false;
     public void onBackPressed(){
         super.onBackPressed();
 
@@ -118,6 +119,7 @@ public class EditProfileActivity extends AppCompatActivity {
         }
         //makeProfiel==false : 만들던 중간에 Back 눌러서 나가면
         else{
+            checkBackPressed=true;
             setResult(RESULT_CANCELED, intent); //취소가 되었다고 말해줌.
             Log.d("EditProfileActivity", "result CANCLE");
         }
@@ -127,7 +129,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
     //데이터베이스에 저장. 완전 처음으로 저장하는 거.
-    static private void saveProfileIntoServer(){
+    private void saveProfileIntoServer(){
+        checkBackPressed=true;
         Log.d("EditProfileActivity", "save profile In server call");
 
         String sex;
@@ -142,7 +145,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 StaticManager.comment
         };
 
-        //db_login.php에 로그인 요청을 보냄. 결과는 브로드캐스트 리비서에서 받을 것임.
+        //db_save.php에 디비 저장 요청을 보냄. 결과는 브로드캐스트 리비서에서 받을 것임.
         Log.d("EditProfileActivity", val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " are sent");
         HttpConnection httpConnection = new HttpConnection();
         httpConnection.connect("http://"+StaticManager.ipAddress+"/eyeballs/db_save.php", "db_save.php", key, val);
@@ -151,7 +154,8 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     //데이터베이스에 저장. 내 프로필 바꾸는 거. idpw 값을 기준으로 저장할꺼임.
-    static private void editProfileInServer(){
+    private void editProfileInServer(){
+        checkBackPressed=true;
         Log.d("EditProfileActivity", "edit profile In server call");
 
         String sex;

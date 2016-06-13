@@ -27,7 +27,7 @@ public class EditProfileActivityTest extends ActivityInstrumentationTestCase2<Ed
 
     @Test
     //뷰들을 StaticManager에서 따와서 세팅함.
-    private void testSetViews() {
+    public void testSetViews() {
 
         //test1
         StaticManager.nickname = "nickname";
@@ -38,14 +38,20 @@ public class EditProfileActivityTest extends ActivityInstrumentationTestCase2<Ed
 
         assertEquals(editProfileActivity.getNicknameEditTxt().getText(), "nickname");
         assertEquals(editProfileActivity.getCommentEditTxt().getText(), "comment");
-        assertFalse(editProfileActivity.getRadioWomanBtn().isChecked());
+        assertTrue(editProfileActivity.getRadioWomanBtn().isChecked());
+        assertFalse(editProfileActivity.getRadioManBtn().isChecked());
 
         //test2
-
-
-
+        //test3
+        //test4
+        //test5
     }
 
+
+    public void testOnBackPressed(){
+        editProfileActivity.onBackPressed();
+
+    }
 
 
 }

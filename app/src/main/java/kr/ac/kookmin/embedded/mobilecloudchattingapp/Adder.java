@@ -9,7 +9,7 @@ public abstract class Adder {
     }
 
     public abstract int multiply(int a, int b) ;
-//    { 
+//    {
 //        return a*b;
 //    }
 }
