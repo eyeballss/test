@@ -13,10 +13,8 @@ import helper.StaticManager;
 //@SmallTest
 public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 
-    //    @Mock
     private LoginActivity loginActivity;
 
-    //    private Resources mockResources;
     public LoginActivityTest() {
         super(LoginActivity.class);
     }
@@ -24,29 +22,8 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     @Before
     public void setUp() throws Exception {
         super.setUp();
-//        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         loginActivity = getActivity();
-//        MockitoAnnotations.initMocks(mockResources);
     }
-
-//    @Test
-//    public void testHttpConnection() throws Exception{
-////        HttpConnection httpConnectionMock = Mockito.mock(HttpConnection.class);
-//        HttpConnection httpConnectionMock = new HttpConnection();
-//        String[] key = {"idpw"};
-//        String[] val = {
-//                "true"
-//        };
-//        httpConnectionMock.connect("http://" + StaticManager.ipAddress + "/eyeballs/db_login.php", "db_login.php", key, val);
-//        assertNotNull(key);
-//        assertNotNull(val);
-//        assertNotNull(httpConnectionMock);
-//
-////        when(loginActivity.test2("false")).thenReturn("false");
-//        assertEquals(loginActivity.test2("false"), "false");
-//        assertEquals(loginActivity.test2("a*b*c*d*e"), "a*b*c*d*e");
-//
-//    }
 
     //    @Test
     public void testSaveProfileToStaticManager() throws Exception {

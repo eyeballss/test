@@ -50,6 +50,7 @@ public class StaticManager {
         LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent);
     }
 
+    //에소프레소
     //테스트용 토스트 메세지
     public static void testToastMsg(final String string){
         if(!singleton){
@@ -78,7 +79,6 @@ public class StaticManager {
             }
 
         });
-//        Collections.reverse(list); // 주석시 오름차순
         return list;
     }
 

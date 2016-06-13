@@ -27,6 +27,7 @@ public class Main_ActivityTest extends ActivityInstrumentationTestCase2<Main_Act
 
     }
 
+    //거리가 가까운 순으로 파싱 잘 되는지 확인
     @Test
     public void testDataParser() {
         ArrayList<String> name = main_Activity.getName();
@@ -37,9 +38,20 @@ public class Main_ActivityTest extends ActivityInstrumentationTestCase2<Main_Act
                         "idpw*b*sex*comment*1.1*" +
                         "idpw*c*sex*comment*0.9*" +
                         "idpw*d*sex*comment*0.0*" +
-                        "idpw*e*sex*comment*0.1*"
+                        "idpw*e*sex*comment*0.1*",
+                "idpw*a*sex*comment*1*" +
+                        "idpw*b*sex*comment*2*" +
+                        "idpw*c*sex*comment*3*" +
+                        "idpw*d*sex*comment*4*" +
+                        "idpw*e*sex*comment*5*",
+                "idpw*c*sex*comment*20*" +
+                        "idpw*b*sex*comment*10*" +
+                        "idpw*d*sex*comment*30*" +
+                        "idpw*a*sex*comment*0*" +
+                        "idpw*e*sex*comment*50*"
         };
 
+        //test1
         main_Activity.callDataParser(data[0]);
         assertEquals(name.get(0), "d");
         assertEquals(name.get(1), "e");
@@ -52,6 +64,31 @@ public class Main_ActivityTest extends ActivityInstrumentationTestCase2<Main_Act
         assertEquals(distance.get(3), "1.0");
         assertEquals(distance.get(4), "1.1");
 
+        //test2
+        main_Activity.callDataParser(data[1]);
+        assertEquals(name.get(0), "a");
+        assertEquals(name.get(1), "b");
+        assertEquals(name.get(2), "c");
+        assertEquals(name.get(3), "d");
+        assertEquals(name.get(4), "e");
+        assertEquals(distance.get(0), "1.0");
+        assertEquals(distance.get(1), "2.0");
+        assertEquals(distance.get(2), "3.0");
+        assertEquals(distance.get(3), "4.0");
+        assertEquals(distance.get(4), "5.0");
+
+        //test3
+        main_Activity.callDataParser(data[1]);
+        assertEquals(name.get(0), "a");
+        assertEquals(name.get(1), "b");
+        assertEquals(name.get(2), "c");
+        assertEquals(name.get(3), "d");
+        assertEquals(name.get(4), "e");
+        assertEquals(distance.get(0), "0.0");
+        assertEquals(distance.get(1), "10.0");
+        assertEquals(distance.get(2), "20.0");
+        assertEquals(distance.get(3), "30.0");
+        assertEquals(distance.get(4), "50.0");
     }
 
 

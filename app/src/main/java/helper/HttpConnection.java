@@ -22,12 +22,9 @@ public class HttpConnection {
     private ArrayList<HttpQue> sBuffer; //http 통신 버퍼
     private String serverURL, selectPHPName="null", result="null"; //값 들. result는 http 통신으로 받은 결과값
     private String[] key, value; //key, value 값은 다양하게 올 수 있으므로 배열로 만듦.
-//    StaticManager staticManager = new StaticManager(); //스태틱 매니저
-//    private Context context; //브로드캐스트를 위한 Context
 
     public HttpConnection(){ //생성자
         sBuffer= new ArrayList<HttpQue>(); //http 연결을 위한 버퍼 생성
-//        context = StaticManager.applicationContext;
         Log.d("http connection","creator");
     }
 
@@ -41,7 +38,6 @@ public class HttpConnection {
         serverURL =url;
     }
     private void setPHPname(String name) { selectPHPName = name; }
-//    private void setContext(Context con) {context = con; } //괜히 있는 거임
 
     public void connect(String url, String phpName, String[] key, String[] value){//}, Context con){
         asykTsk = new BackgroundTask(); //AsyncTask 생성. 왜냐면 asyncTask는 재사용이 불가능(하다고 이해한게 맞는지 모르겠음)
@@ -50,14 +46,11 @@ public class HttpConnection {
         setPHPname(phpName);
         setKey(key);
         setValue(value);
-//        setContext(StaticManager.applicationContext);
         Log.d("http connection", "connect method call");
         Log.d("http connection", "url : " + url);
         Log.d("http connection", "phpName : " + phpName);
         for(int i=0; i<key.length; i++) Log.d("http connection", "key["+i+"] : " + key[i]);
         for(int i=0; i<value.length; i++) Log.d("http connection", "value["+i+"] : " + value[i]);
-
-//        Log.d("http connection", "context : " + context);
 
         asykTsk.execute(); //AsyncTask를 실행함!
     }
@@ -80,24 +73,9 @@ public class HttpConnection {
 
             //일이 끝난 후에 브로드캐스트 한다.
             StaticManager.sendBroadcast(selectPHPName, result); //key는 select를 위해 불렀던 php 페이지 이름이 됨.
-
-
-//            staticManager.httpResult("key", result); //스태틱 매니저의 httpResult에 넣어줌.
-
             super.onPostExecute(o);
         }
     }
-
-
-
-//    //실행 중인지 아닌지를 판별함. 그때 그때 만들게 되버려서 이렇게 할 수 없게 됨!
-//    public AsyncTask.Status statusAsyncTask(){
-//        return asykTsk.getStatus();
-//    }
-
-
-
-
 
 
     //AsyncTask로 인자 값들 넘겨주면 아래의 PostData도 내부 클래스가 아닌 외부 클래스로 만들 수 있음.
@@ -106,11 +84,6 @@ public class HttpConnection {
     //------------------------------
     public String PostData() {
         Log.d("http connection", "PstData method call");
-        // Server URL
-//        String Server_URL = "http://ec2-52-79-190-209.ap-northeast-2.compute.amazonaws.com/test.php";
-
-        // 전송할 데이터를 저장할 ArrayList 생성
-//        ArrayList<HttpQue> sBuffer = new ArrayList<HttpQue>();
 
         // ArrayList에 <변수=값> 형태로 저장
         sBuffer.add(new HttpQue("", serverURL)); // 서버 URL
@@ -118,10 +91,6 @@ public class HttpConnection {
         for(int i=0; i<key.length; i++){ //key-value 쌍들을 모두 넣는다.
             sBuffer.add(new HttpQue(key[i], value[i]));
         }
-//        sBuffer.add(new HttpQue(key, value));   // "" 안의 문자열은
-//        sBuffer.add(new HttpQue("user_pword", myPWord)); // 서버에 설정된 변수명이다
-//        sBuffer.add(new HttpQue("user_nick", myNick));
-//        sBuffer.add(new HttpQue("user_subject", mySubject));
         Log.d("http connection", "PstData method sBuffer add");
 
         // HttpPost 생성
@@ -131,16 +100,9 @@ public class HttpConnection {
         // Data 전송
         mHttp.HttpPostData();
         Log.d("http connection", "PstData method mHttp.HttpPostData()");
-//        myResult =
         String result = mHttp.rString; // 전송 결과
         Log.d("http connection", "PstData method result : "+result);
         return result;
-//        // Tab2에 있는 TextEdit에 전송 결과 표시
-//        handler.post(new Runnable() {
-//            public void run() {
-//                ((TextView) (findViewById(R.id.text_result))).setText(myResult);
-//            }
-//        });
     } // PostData
 }
 

@@ -10,6 +10,7 @@ import android.util.Log;
  */
 public class Message {
 
+    //에소프레소
     public static void okayMsgShow(String msg) {
         AlertDialog.Builder alert = new AlertDialog.Builder(StaticManager.applicationContext);
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
