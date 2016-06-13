@@ -11,12 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.StringTokenizer;
 
-import helper.DataSaver;
 import helper.HttpConnection;
 import helper.StaticManager;
 
@@ -33,6 +31,7 @@ import helper.StaticManager;
  * - package name
  * - authority, private is default
  * - size of editText
+ * - readMe
  */
 
 
@@ -45,9 +44,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private EditText idEditTxt, pwEditTxt;
-    private Button loginBtn;
+//    private Button loginBtn;
     private static int idpwHashCode;
-    static HttpConnection httpConnection;
+    static private HttpConnection httpConnection;
 
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);//타이틀바 없애기
@@ -59,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
         idEditTxt = (EditText) findViewById(R.id.idEditTxt);
         pwEditTxt = (EditText) findViewById(R.id.pwEditTxt);
-        loginBtn = (Button) findViewById(R.id.loginBtn);
+//        loginBtn = (Button) findViewById(R.id.loginBtn);
         httpConnection = new HttpConnection(); //http 컨넥터 만들기
 
     }//onCreate
@@ -68,9 +67,8 @@ public class LoginActivity extends AppCompatActivity {
     //로그인 버튼 클릭하면
     public void loginBtnOnClick(View v) {
 
-
-        String idTxt = idEditTxt.getText().toString().trim();
-        String pwTxt = pwEditTxt.getText().toString().trim();
+        String idTxt = idEditTxt.getText().toString();
+        String pwTxt = pwEditTxt.getText().toString();
 
         if (idTxt.length() == 0) {
             StaticManager.testToastMsg("ID is empty!");
@@ -84,12 +82,10 @@ public class LoginActivity extends AppCompatActivity {
             StaticManager.testToastMsg("PW is empty!");
             return;
         }
-        //연결을 시도함.
-        //아이디+비밀번호 문자열을 해쉬코드로 넘김.
-        idpwHashCode = (idTxt + "" + pwTxt).hashCode();
-        //SM에 저장함.
-        StaticManager.idpw = idpwHashCode;
 
+        makeHashCode(idTxt, pwTxt);
+
+        //연결을 시도함.
         //key-value를 String[]으로 만듦.
         String[] key = {"idpw"};
         String[] val = {
@@ -100,14 +96,24 @@ public class LoginActivity extends AppCompatActivity {
 
     }//loginBtnOnClick
 
+    private void makeHashCode(String idTxt, String pwTxt){
+        //아이디+비밀번호 문자열을 해쉬코드로 넘김.
+        idpwHashCode = (idTxt.trim() + "" + pwTxt.trim()).hashCode();
+        //SM에 저장함.
+        StaticManager.idpw = idpwHashCode;
+    }
+
+    //for test
+    public void callMakeHashCode(String idTxt, String pwTxt){
+        makeHashCode(idTxt, pwTxt);
+    }
 
     //서버에서 가져온 값을 알려주는 브로드캐스트 리시버
-    public BroadcastReceiver mLocalBroadcastReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver mLocalBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // db_login.php로 보낸 결과값을 여기서 받음.
             final String message = intent.getStringExtra("db_login.php");
-            test2(message);
             Intent in;
             if (message.equals("false")) { //로그인에 실패하면 바로 가입을 위해 EidtProfileActivity로 이동
                 in = new Intent(LoginActivity.this, EditProfileActivity.class);
@@ -128,7 +134,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-    public String test2(String msg){return msg;}
 
     //profile 만든 후에 제대로 저장하면 OK 아니면 FALSE
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -143,7 +148,6 @@ public class LoginActivity extends AppCompatActivity {
             Intent in = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(in);
             finish(); //로그인 하고 나면 로그인창은 닫습니다.
-
         }
 
         //저장이 안되어있다면, 즉 프로필을 제대로 생성하지 않았다면
@@ -157,11 +161,8 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    String testString;
     //msg를 파싱해서 원하는 것만
     private void saveProfileToStaticManager(String msg) {
-        DataSaver dataSaver = new DataSaver();
-
         StringTokenizer token = new StringTokenizer(msg, " ");
 
         //StaticManager에 저장하여 다른 곳에서도 이용할 수 있도록 함.
@@ -178,11 +179,10 @@ public class LoginActivity extends AppCompatActivity {
         saveProfileToStaticManager(msg);
     }
 
-    public View getLoginBtn(){
-        return loginBtn;
-    }
 
-    public void onResume() {
+
+
+    protected void onResume() {
         super.onResume();
         //이것도 나중에 스태틱으로 바꿔주자. 여기서 특별히 다르게 처리해야 할 것은 없으니까.
         // Register mMessageReceiver to receive messages. 브로드캐스트 리시버 등록

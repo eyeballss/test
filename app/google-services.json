@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "137028202669",
+    "project_id": "who-is-near-me"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137028202669:android:8e20efb25ec5e77a",
+        "android_client_info": {
+          "package_name": "kr.ac.kookmin.embedded.mobilecloudchattingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4vxQ9Gq-EmFa6Bsp202z0eTQeNMvVmyY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

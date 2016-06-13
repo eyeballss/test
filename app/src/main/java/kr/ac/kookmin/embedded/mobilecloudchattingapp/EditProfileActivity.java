@@ -8,17 +8,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import helper.DataSaver;
 import helper.HttpConnection;
 import helper.StaticManager;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    EditText nicknameEditTxt, commentEditTxt;
-    RadioButton radioManBtn, radioWomanBtn;
-    DataSaver dataSaver;
-    Intent intent;
-    boolean whereicame= false; //false면 로그인 실패로 오는 경우. true면 edit으로 오는 경우
+    private EditText nicknameEditTxt, commentEditTxt;
+    private RadioButton radioManBtn, radioWomanBtn;
+    private Intent intent;
+    private boolean whereicame= false; //false면 로그인 실패로 오는 경우. true면 edit으로 오는 경우
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +40,6 @@ public class EditProfileActivity extends AppCompatActivity {
             setViews();
         }
 
-        dataSaver = new DataSaver();
     }
 
     //뷰들을 StaticManager에서 따와서 세팅함.
@@ -54,13 +51,22 @@ public class EditProfileActivity extends AppCompatActivity {
         StaticManager.checkIfSMHasProfile=true;
     }
 
+    public void callSetViews(){
+        setViews();
+    }
+    public EditText getNicknameEditTxt() {return nicknameEditTxt;}
+    public EditText getCommentEditTxt() {return commentEditTxt;}
+    public RadioButton getRadioManBtn(){return radioManBtn;}
+    public RadioButton getRadioWomanBtn() {return radioWomanBtn;}
+
     //닉네임과 sex 여부 체크하고 코멘트는 괜찮음.
     public void saveProfileBtnOnClick(View v){
         if(nicknameEditTxt.getText().toString().matches("")){ //닉네임이 정해져 있지 않으면
             StaticManager.testToastMsg("fill your nickname");
             return;
         }
-        if(nicknameEditTxt.getText().toString().contains(" ")){ //닉네임에 스페이스가 있으면
+        if(nicknameEditTxt.getText().toString().contains(" ") ||
+                nicknameEditTxt.getText().toString().contains("\t")){ //닉네임에 스페이스나 탭이 있으면
             StaticManager.testToastMsg("can't include empty space in id");
             return;
         }
